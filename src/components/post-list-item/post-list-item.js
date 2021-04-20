@@ -46,7 +46,7 @@ export default class PostListItem extends Component {
           <button className='btn-star btn-sm' type='button' onClick={this.onImportant}>
             <i className='fa fa-star'/>
           </button>
-          <button className='btn-trash btn-sm' type='button'>
+          <button className='btn-trash btn-sm' type='button' onClick={this.props.onDelete}>
             <i className='fa fa-trash'/>
           </button>
           <i className='fa fa-heart'/>
