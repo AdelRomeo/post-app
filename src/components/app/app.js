@@ -11,56 +11,81 @@ export default class App extends Component {
 
   state = {
     data: [
-      {label: 'Going to learn React', important: true, id: 1},
-      {label: 'That is so good', important: false, id: 2},
-      {label: 'I need a break...', important: false, id: 3},
+      {label: 'Going to learn React', important: true, like: false, id: 1},
+      {label: 'That is so good', important: false, like: false, id: 2},
+      {label: 'I need a break...', important: false, like: false, id: 3},
     ]
   }
 
   //удаление постов
-  deleteItem = (id) =>{
-    this.setState((state)=>{
-      //элемент на который кликнули
+  deleteItem = (id) => {
+    this.setState((state) => {
+      //индекс элемента на который кликнули
       const index = state.data.findIndex(elem => elem.id === id)
 
-      //часть массива от начала до того элемента на котоый кликнули (который нужно удалить)
-      const before = state.data.slice(0, index)
-      //часть массива со следующего элемента на который кликнули и до конца
-      const after = state.data.slice(index +1)
       //новый массив без удаленного элемента
-      const newData = [...before, ...after]
+      const newData = [...state.data.slice(0, index), ...state.data.slice(index + 1)]
 
       //возвращаем измененный state
-      return{
+      return {
         data: newData
       }
     })
   }
 
   //добавление постов
-  addItem = (text)=>{
-
+  addItem = (text) => {
     //структура нового элемента
     const newItem = {
-      label: text, important: false, id: this.state.data.length+1
+      label: text, important: false, id: this.state.data.length + 1
     }
 
-    this.setState(({data})=>{
+    this.setState(({data}) => {
       //создаем промежуточный массив из data и ного элемента
       const arr = [...data, newItem];
 
       //возвращаем измененный state
-      return{
+      return {
         data: arr
       }
     })
-    console.log(this.state.data)
+  }
+
+  //добавление постов в 'важное'
+  onToggleImportant = (id) => {
+    console.log(`Impor ${id}`)
+  }
+
+  //лайки постов
+  onToggleLiked = (id) => {
+
+    this.setState(({data}) => {
+      //индекс элемента на который кликнули
+      const index = data.findIndex(elem => elem.id === id)
+      //объект на который кликнули
+      const old = data[index]
+      //измененный объект
+      const newItem = {...old, like: !old.like}
+      //const newItem = {...old, important: !old.important}
+      //создаем новый массив постов
+      const newArr = [...data.slice(0, index), newItem, ...data.slice(index + 1)]
+      //возвращаем измененный state
+      return{
+        data: newArr
+      }
+    })
   }
 
   render() {
+
+    //количество лайкнутых постов
+    let likedPosts = this.state.data.filter(item => item.like).length
+    //общее количество постов
+    let totalPosts = this.state.data.length
+
     return (
       <div className='app'>
-        <AppHeader/>
+        <AppHeader likedPosts={likedPosts} totalPosts={totalPosts}/>
         <div className='search-panel d-flex'>
           <SearchPanel/>
           <PostStatusFilter/>
@@ -68,6 +93,8 @@ export default class App extends Component {
         <PostList
           posts={this.state.data}
           onDelete={this.deleteItem}
+          onToggleImportant={this.onToggleImportant}
+          onToggleLiked={this.onToggleLiked}
         />
         <PostAddForm
           onAdd={this.addItem}
