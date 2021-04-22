@@ -23,7 +23,7 @@ export default class PostListItem extends Component {
       <div className={classes}>
         <span className='app-list-item-label' onClick={this.props.onToggleLiked}>{this.props.label}</span>
         <div className='d-flex justify-content-center align-items-center'>
-          <button className='btn-star btn-sm' type='button' onClick={this.props.onToggleImportant}>
+          <button className='btn-star btn-sm' type='button' onClick={this.props.onToggleLiked2}>
             <i className='fa fa-star'/>
           </button>
           <button className='btn-trash btn-sm' type='button' onClick={this.props.onDelete}>

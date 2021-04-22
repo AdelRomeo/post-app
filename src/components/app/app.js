@@ -57,15 +57,17 @@ export default class App extends Component {
   }
 
   //лайки постов
-  onToggleLiked = (id) => {
+  onToggleLiked = (id, sec) => {
 
     this.setState(({data}) => {
       //индекс элемента на который кликнули
       const index = data.findIndex(elem => elem.id === id)
       //объект на который кликнули
-      const old = data[index]
+      const old = data[index];
+      //old[sec] = !old[sec]
       //измененный объект
-      const newItem = {...old, like: !old.like}
+      const newItem = {...old}
+      newItem[sec] = !newItem[sec]
       //const newItem = {...old, important: !old.important}
       //создаем новый массив постов
       const newArr = [...data.slice(0, index), newItem, ...data.slice(index + 1)]
